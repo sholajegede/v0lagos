@@ -80,7 +80,7 @@ export default function V0LagosEvent() {
               <img 
                 src={logos.v0 || "/placeholder.svg"} 
                 alt="v0" 
-                className="h-[24px] w-[50px] transition-opacity duration-300 group-hover:opacity-80" 
+                className="h-[24px] w-[50px] transition-opacity duration-300 group-hover:opacity-80 dark:invert-0 invert" 
               />
               <span className="font-mono text-[12px] text-white tracking-[2.4px] [text-shadow:0px_0px_6px_rgba(255,255,255,0.4)] transition-colors duration-300 group-hover:text-white">
                 IRL - LAGOS
