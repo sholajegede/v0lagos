@@ -5,11 +5,13 @@ import Image from "next/image";
 import {
   ChevronLeft,
   ChevronRight,
-  Play,
   X,
   ExternalLink,
   Play as PlayIcon,
   RotateCcw,
+  Clock,
+  User,
+  CreditCard,
 } from "lucide-react";
 import {
   presentationTracks,
@@ -478,7 +480,7 @@ export default function PresentationPage() {
               Your Credits
             </h2>
 
-            <div className="border border-gray-300 dark:border-gray-700 rounded-lg p-8 mb-8 hover:border-gray-400 dark:hover:border-gray-600 transition-colors">
+            <div className="border border-gray-300 dark:border-gray-700 rounded-lg p-8 mb-5 hover:border-gray-400 dark:hover:border-gray-600 transition-colors">
               <p className="text-xs text-gray-500 mb-4 tracking-widest">
                 CREDIT CODE
               </p>
@@ -524,10 +526,13 @@ export default function PresentationPage() {
 
             <div className="flex gap-6 text-xs text-black dark:text-white">
               <div className="flex items-center gap-2">
-                <span>Clock Icon</span> Credits last 2 weeks after redemption
+                <span><CreditCard className="text-gray-500 w-4 h-4" /></span> The code gives you $10 in Bonus Credits
               </div>
               <div className="flex items-center gap-2">
-                <span>User Icon</span> One redemption per individual
+                <span><Clock className="text-gray-500 w-4 h-4" /></span> Credits last 2 weeks after redemption
+              </div>
+              <div className="flex items-center gap-2">
+                <span><User className="text-gray-500 w-4 h-4" /></span> One redemption per individual
               </div>
             </div>
           </div>
