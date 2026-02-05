@@ -273,7 +273,7 @@ export default function HeroSection() {
   };
 
   return (
-    <main className="overflow-x-hidden">
+    <main className="overflow-x-hidden scroll-smooth">
       <section className="min-h-dvh overflow-hidden flex flex-col lg:relative">
         {/* Left content - shrinks to fit on mobile, fixed width on desktop */}
         <div className="flex-shrink-0 pb-4 pt-6 sm:pt-8 lg:pb-8 lg:pt-36 lg:w-1/2 relative z-10">

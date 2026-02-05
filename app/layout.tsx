@@ -2,7 +2,6 @@ import React from "react"
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
-import { ThemeProvider } from '@/components/theme-provider'
 // @ts-ignore TS2307: Cannot find module or type declarations for side-effect import of './globals.css'.
 import './globals.css'
 
@@ -66,10 +65,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={`dark ${_geist.variable} ${_geistMono.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          {children}
-          <Analytics />
-        </ThemeProvider>
+        {children}
+        <Analytics />
       </body>
     </html>
   )
