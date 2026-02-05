@@ -3,13 +3,14 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
+// @ts-ignore TS2307: Cannot find module or type declarations for side-effect import of './globals.css'.
 import './globals.css'
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const _geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
+const _geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
-  title: 'v0 IRL Lagos - Prompt to Production',
+  title: 'v0 IRL Lagos - Prompt to Production | Lagos February 7th, 2026',
   description: 'Join us for Lagos\'s first official v0 IRL event. A hands-on workshop where we\'ll build a complete full stack application together on February 7, 2026.',
   generator: 'v0.app',
   openGraph: {
@@ -63,7 +64,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={`dark ${_geist.variable} ${_geistMono.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           {children}

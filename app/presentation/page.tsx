@@ -354,7 +354,7 @@ export default function PresentationPage() {
                   ref={videoRef}
                   width="100%"
                   height="100%"
-                  src="https://www.youtube.com/embed/dg1e_qjlYsk?fs=1&autoplay=1"
+                  src="https://www.youtube.com/embed/aNsEgVIhcRY?fs=1&autoplay=1"
                   title="Vercel Team Welcome"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
