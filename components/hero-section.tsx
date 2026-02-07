@@ -23,7 +23,6 @@ import CardTemplate, {
 import { Download, Link, Check } from "lucide-react";
 import { encryptLanyardData } from "@/lib/utils";
 
-// X (Twitter) icon component
 function XIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -37,7 +36,6 @@ function XIcon({ className }: { className?: string }) {
   );
 }
 
-// LinkedIn icon component
 function LinkedInIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -60,10 +58,7 @@ export default function HeroSection() {
   const highlightOverride = searchParams.get("highlight"); // 'tracks', 'ship', or 'off'
   const eventState = searchParams.get("event"); // 'completed' to force finished state
 
-  // Demo mode: ?demo=10:40 simulates being on event day at that time
-  const demoTime = searchParams.get("demo");
   const [currentTime, setCurrentTime] = useState(new Date());
-
   const [inputValue, setInputValue] = useState(defaultName);
   const [appliedName, setAppliedName] = useState(defaultName);
   const [cardVariant, setCardVariant] = useState<CardVariant>(defaultVariant);
@@ -78,15 +73,12 @@ export default function HeroSection() {
   const cardTemplateRef = useRef<CardTemplateRef>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Auto-capture texture when component mounts with a defaultName from URL
   useEffect(() => {
-    // If no defaultName, mark as initialized immediately
     if (!defaultName) {
       setIsInitialized(true);
       return;
     }
 
-    // If there's a defaultName, wait for card template to render then capture
     const timer = setTimeout(async () => {
       if (cardTemplateRef.current) {
         await cardTemplateRef.current.captureTexture();
@@ -97,7 +89,6 @@ export default function HeroSection() {
     return () => clearTimeout(timer);
   }, [defaultName]);
 
-  // Generate shareable URL with encrypted username and variant
   const getShareableUrl = useCallback(() => {
     const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
     if (appliedName) {
@@ -107,7 +98,6 @@ export default function HeroSection() {
     return `${baseUrl}/live`;
   }, [appliedName, appliedVariant]);
 
-  // Share message templates
   const shareMessage = appliedName
     ? `I'm at @v0 Prompt to Production Lagos! Check out my personalized card`
     : `Check out v0 IRL Lagos! Create your personalized event card`;
@@ -153,28 +143,24 @@ export default function HeroSection() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
-    }, 60000); // Update every minute
+    }, 1000);
 
     return () => clearInterval(timer);
   }, []);
 
-  // Parse demo time if provided (format: "HH:MM" or "H:MM")
-  let isEventDay =
-    currentTime.getFullYear() === 2026 &&
-    currentTime.getMonth() === 1 &&
-    currentTime.getDate() === 7;
-  let currentHour = currentTime.getHours();
-  let currentMinute = currentTime.getMinutes();
-  const isEventCompleted = eventState === "completed";
+  const getLagosTime = (date: Date) => {
+    return new Date(date.toLocaleString("en-US", { timeZone: "Africa/Lagos" }));
+  };
 
-  if (demoTime) {
-    const timeMatch = demoTime.match(/^(\d{1,2}):(\d{2})$/);
-    if (timeMatch) {
-      isEventDay = true; // Force event day for demo
-      currentHour = parseInt(timeMatch[1], 10);
-      currentMinute = parseInt(timeMatch[2], 10);
-    }
-  }
+  const lagosTime = getLagosTime(currentTime);
+
+  let isEventDay =
+    lagosTime.getFullYear() === 2026 &&
+    lagosTime.getMonth() === 1 &&
+    lagosTime.getDate() === 7;
+  let currentHour = lagosTime.getHours();
+  let currentMinute = lagosTime.getMinutes();
+  const isEventCompleted = eventState === "completed";
 
   const currentTimeInMinutes = currentHour * 60 + currentMinute;
 
@@ -221,10 +207,8 @@ export default function HeroSection() {
   };
 
   const currentScheduleIndex = getCurrentScheduleIndex();
+  const isEventOngoing = isEventDay && currentScheduleIndex >= 0;
 
-  // Compute button highlight states
-  // Track selection & Teams: 10:10-10:30 (index 1)
-  // Ship & submit: 12:00-12:30 (index 3)
   let highlightTracksButtons = false;
   let highlightSubmitButton = false;
 
@@ -236,13 +220,10 @@ export default function HeroSection() {
   } else if (highlightOverride === "ship") {
     highlightSubmitButton = true;
   } else if (highlightOverride !== "off") {
-    // Use real time logic
     if (isEventDay) {
       if (currentScheduleIndex === 1) {
-        // Track selection & Teams
         highlightTracksButtons = true;
       } else if (currentScheduleIndex === 3) {
-        // Ship & submit
         highlightSubmitButton = true;
       }
     }
@@ -255,7 +236,6 @@ export default function HeroSection() {
   const handleApplyName = async () => {
     setAppliedName(inputValue);
     setAppliedVariant(cardVariant);
-    // Capture the card template as a texture
     await cardTemplateRef.current?.captureTexture();
   };
 
@@ -275,27 +255,29 @@ export default function HeroSection() {
   return (
     <main className="overflow-x-hidden scroll-smooth">
       <section className="min-h-dvh overflow-hidden flex flex-col lg:relative">
-        {/* Left content - shrinks to fit on mobile, fixed width on desktop */}
         <div className="flex-shrink-0 pb-4 pt-6 sm:pt-8 lg:pb-8 lg:pt-36 lg:w-1/2 relative z-10">
           <div className="relative mx-auto flex max-w-xl flex-col px-4 sm:px-6 lg:block">
             <div className="mx-auto max-w-2xl text-center lg:ml-0 lg:text-left">
-              {/* Status Pill */}
               <div className="mb-2 flex justify-center lg:justify-start">
                 <div className="inline-flex items-center gap-2 rounded-full bg-gray-200 px-4 py-2">
                   <div
                     className={`h-2 w-2 rounded-full ${
                       isEventCompleted
                         ? "bg-muted-foreground"
-                        : isEventDay
+                        : isEventOngoing
                         ? "bg-green-500 animate-pulse"
+                        : isEventDay
+                        ? "bg-yellow-500 animate-pulse"
                         : "bg-red-500 animate-pulse"
                     }`}
                   ></div>
                   <span className="text-sm font-medium text-gray-800">
                     {isEventCompleted
                       ? "Event completed"
-                      : isEventDay
+                      : isEventOngoing
                       ? "Ongoing"
+                      : isEventDay
+                      ? "Starting soon"
                       : "Not started"}
                   </span>
                 </div>
@@ -321,7 +303,6 @@ export default function HeroSection() {
                 </TextEffect>
               </div>
 
-              {/* Schedule Block */}
               <div className="mt-3 sm:mt-4 rounded-xl bg-white/6 backdrop-blur-2xl p-3 sm:p-4 relative overflow-hidden">
                 {isEventCompleted && (
                   <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/90 text-center gap-4">
@@ -397,7 +378,6 @@ export default function HeroSection() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
               <div className="mt-3 sm:mt-4 flex flex-col items-center justify-center gap-2 sm:gap-3 sm:flex-row sm:flex-wrap lg:justify-start">
                 <Button
                   asChild
@@ -574,7 +554,6 @@ export default function HeroSection() {
               </p>
             )}
 
-            {/* Share buttons - only visible when a name has been applied */}
             {appliedName && (
               <div className="mt-4 flex items-center gap-2">
                 <span className="text-sm font-medium text-muted-foreground px-2 py-1 backdrop-blur-md bg-black/10 rounded-md">
@@ -640,7 +619,6 @@ export default function HeroSection() {
           </div>
         </div>
       </section>
-      {/* Hidden card template for texture generation */}
       <CardTemplate
         ref={cardTemplateRef}
         userName={appliedName}
