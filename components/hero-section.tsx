@@ -267,7 +267,7 @@ export default function HeroSection() {
                         : isEventOngoing
                         ? "bg-green-500 animate-pulse"
                         : isEventDay
-                        ? "bg-yellow-500 animate-pulse"
+                        ? "bg-green-500 animate-pulse"
                         : "bg-red-500 animate-pulse"
                     }`}
                   ></div>
@@ -277,7 +277,7 @@ export default function HeroSection() {
                       : isEventOngoing
                       ? "Ongoing"
                       : isEventDay
-                      ? "Starting soon"
+                      ? "Ongoing"
                       : "Not started"}
                   </span>
                 </div>
