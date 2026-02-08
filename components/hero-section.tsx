@@ -51,12 +51,15 @@ function LinkedInIcon({ className }: { className?: string }) {
 
 const MAX_CHARACTERS = 20;
 
-export default function HeroSection() {
+function HeroSectionContent() {
   const defaultName = "";
   const defaultVariant = "dark";
   const searchParams = useSearchParams();
   const highlightOverride = searchParams.get("highlight"); // 'tracks', 'ship', or 'off'
   const eventState = searchParams.get("completed"); // 'completed' to force finished state
+  
+  // TEMPORARY: Force completed state for testing
+  const forceCompleted = true; // Set to false to use URL param
 
   const [currentTime, setCurrentTime] = useState(new Date());
   const [inputValue, setInputValue] = useState(defaultName);
@@ -154,13 +157,15 @@ export default function HeroSection() {
 
   const lagosTime = getLagosTime(currentTime);
 
+  // FIXED: Declare isEventCompleted first so it can be used in other logic
+  const isEventCompleted = forceCompleted || eventState === "completed";
+  
   let isEventDay =
     lagosTime.getFullYear() === 2026 &&
     lagosTime.getMonth() === 1 &&
     lagosTime.getDate() === 7;
   let currentHour = lagosTime.getHours();
   let currentMinute = lagosTime.getMinutes();
-  const isEventCompleted = eventState === "completed";
 
   const currentTimeInMinutes = currentHour * 60 + currentMinute;
 
@@ -307,13 +312,13 @@ export default function HeroSection() {
                 {isEventCompleted && (
                   <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/90 text-center gap-4">
                     <span className="text-md font-geist text-white">
-                      Thank you for attending!!!
+                      Thank you for attending!
                     </span>
                     <span className="text-sm font-geist text-white">
                       We hope to see you again soon for another v0 or Ship It
-                      First event ;)
+                      First event.
                     </span>
-                    <span className="text-sm font-geist text-white">- RF</span>
+                    <span className="text-sm font-geist text-white">- Shola Jegede</span>
                   </div>
                 )}
                 <h3 className="mb-2 sm:mb-4 text-base sm:text-lg font-semibold text-white">
@@ -628,5 +633,14 @@ export default function HeroSection() {
         date=""
       />
     </main>
+  );
+}
+
+// Wrapper component with Suspense boundary
+export default function HeroSection() {
+  return (
+    <Suspense fallback={<div className="min-h-dvh flex items-center justify-center">Loading...</div>}>
+      <HeroSectionContent />
+    </Suspense>
   );
 }
