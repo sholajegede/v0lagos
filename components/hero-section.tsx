@@ -56,7 +56,7 @@ export default function HeroSection() {
   const defaultVariant = "dark";
   const searchParams = useSearchParams();
   const highlightOverride = searchParams.get("highlight"); // 'tracks', 'ship', or 'off'
-  const eventState = searchParams.get("event"); // 'completed' to force finished state
+  const eventState = searchParams.get("completed"); // 'completed' to force finished state
 
   const [currentTime, setCurrentTime] = useState(new Date());
   const [inputValue, setInputValue] = useState(defaultName);
